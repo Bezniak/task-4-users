@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from "react";
-import {makeRequest} from "../makeRequest";
+import {makeRequest} from "./makeRequest";
 
 const useFetchAllData = (url) => {
     const [data, setData] = useState([]);
@@ -11,6 +11,7 @@ const useFetchAllData = (url) => {
             setLoading(true);
             const res = await makeRequest.get(url);
             setData(res.data.data);
+            return res.data.data; // Return the fetched data
         } catch (error) {
             setError(true);
         } finally {
@@ -18,11 +19,15 @@ const useFetchAllData = (url) => {
         }
     }, [url]);
 
+    const refetch = useCallback(() => {
+        return fetchData(); // Return the promise from fetchData
+    }, [fetchData]);
+
     useEffect(() => {
         fetchData();
     }, [fetchData]);
 
-    return {data, loading, error};
+    return {data, loading, error, refetch};
 };
 
 export default useFetchAllData;
