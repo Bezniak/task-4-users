@@ -30,6 +30,7 @@ const Register = () => {
                     blocked: false,
                 },
             });
+            console.log('Response:', response.data);
             reset();
             setIsRegistered(true);
         } catch (error) {
