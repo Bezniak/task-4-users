@@ -26,8 +26,8 @@ const Register = () => {
                     userEmail: data.email
                 }
             });
-            if (existingUser.data.data[0].attributes.userEmail === data.email) {
-                setIsUserExists(true)
+            if (existingUser?.data?.data?.[0]?.attributes?.userEmail === data.email) {
+                setIsUserExists(true);
                 throw new Error('User with this email already exists');
             } else {
                 const response = await axios.post(process.env.REACT_APP_API_URL + '/app-users', {
