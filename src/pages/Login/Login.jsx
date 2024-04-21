@@ -62,7 +62,6 @@ const Login = () => {
             console.error(error);
             handleLoginError();
         }
-
         setIsLoading(false);
         reset();
     };

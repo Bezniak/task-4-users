@@ -3,9 +3,11 @@ import {useForm} from 'react-hook-form';
 import axios from 'axios';
 import {NavLink} from 'react-router-dom';
 import {formatDate} from "../../components/helpers/helpers";
+import {Button} from "react-bootstrap";
 
 const Register = () => {
     const [isRegistered, setIsRegistered] = useState(false);
+    const [isUserExists, setIsUserExists] = useState(false);
     const {
         register,
         handleSubmit,
@@ -19,24 +21,54 @@ const Register = () => {
         try {
             const registrationDate = formatDate(new Date());
             const currentDateTime = formatDate(new Date(), true);
-            const response = await axios.post(process.env.REACT_APP_API_URL + '/app-users', {
-                data: {
-                    userName: data.name,
-                    userEmail: data.email,
-                    userPassword: data.password,
-                    registrationDate: registrationDate,
-                    lastLoginDate: currentDateTime,
-                    status: 'active',
-                    blocked: false,
-                },
+            const existingUser = await axios.get(process.env.REACT_APP_API_URL + '/app-users', {
+                params: {
+                    userEmail: data.email
+                }
             });
-            console.log('Response:', response.data);
-            reset();
-            setIsRegistered(true);
+            if (existingUser.data.data[0].attributes.userEmail === data.email) {
+                setIsUserExists(true)
+                throw new Error('User with this email already exists');
+            } else {
+                const response = await axios.post(process.env.REACT_APP_API_URL + '/app-users', {
+                    data: {
+                        userName: data.name,
+                        userEmail: data.email,
+                        userPassword: data.password,
+                        registrationDate: registrationDate,
+                        lastLoginDate: currentDateTime,
+                        status: 'active',
+                        blocked: false,
+                    },
+                });
+                console.log('Response:', response.data);
+                setIsUserExists(true)
+                reset();
+                setIsRegistered(true);
+            }
         } catch (error) {
-            console.error('Registration failed:', error);
+            console.error('Registration failed:', error.message);
         }
     };
+
+
+    if (isUserExists) {
+        return (
+            <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+                <h1 className="text-center fs-2">
+                    The user with this email already exists!
+                </h1>
+                <Button variant="outline-info" className="mx-3 w-25 mt-5">
+                    <NavLink
+                        to="/login"
+                        className="text-decoration-none text-light"
+                    >
+                        Login
+                    </NavLink>
+                </Button>
+            </div>
+        );
+    }
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">

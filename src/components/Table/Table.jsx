@@ -51,8 +51,8 @@ const UsersTable = () => {
 
     if (loading) {
         return (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <Spinner animation="border" variant="primary" style={{ width: '100px', height: '100px' }} />
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+                <Spinner animation="border" variant="primary" style={{width: '100px', height: '100px'}}/>
             </div>
         );
     }
