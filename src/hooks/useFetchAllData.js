@@ -20,7 +20,7 @@ const useFetchAllData = (url) => {
     }, [url]);
 
     const refetch = useCallback(() => {
-        return fetchData(); // Return the promise from fetchData
+        return fetchData();
     }, [fetchData]);
 
     useEffect(() => {

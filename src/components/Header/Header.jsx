@@ -19,7 +19,7 @@ const Header = ({userName, setIsLoggedIn, setUserExists}) => {
             <button
                 className="btn btn-outline-secondary d-inline-block"
                 onClick={handleLogout}>
-                <NavLink to='/'  className="text-decoration-none text-light">Logout</NavLink>
+                <NavLink to='/' className="text-decoration-none text-light">Logout</NavLink>
             </button>
         </div>
     );
